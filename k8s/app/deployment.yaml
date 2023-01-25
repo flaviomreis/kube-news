@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webapp-deploy
+spec:
+  selector:
+    matchLabels:
+      app: webapp-deploy
+  template:
+    metadata:
+      labels:
+        app: webapp-deploy
+    spec:
+      containers:
+        - name: webapp-deploy
+          image: f18s/kube-news:v1
+          ports:
+            - containerPort: 8080
+          env:
+            - name: DB_DATABASE
+              value: kubenews
+            - name: DB_USERNAME
+              value: kubenews
+            - name: DB_PASSWORD
+              value: kubenews
+            - name: DB_HOST
+              value: postgres
