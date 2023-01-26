@@ -1,8 +1,6 @@
 pipeline {
   agent any
 
-  def app
-
   stages {
     stage ('build docker image') {
       steps {
