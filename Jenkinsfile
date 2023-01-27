@@ -5,22 +5,22 @@ pipeline {
     stage ('build docker image') {
       steps {
         script {
-          dockerapp = docker.build("f18s.f9s/kube-news:${env.BUILD_ID}", '-f ./src/Dockerfile ./src')
+          dockerapp = docker.build("f18s/kube-news:${env.BUILD_ID}", '-f ./src/Dockerfile ./src')
         }
       }
     }
-    // stage ('push docker image') {
-    //   steps {
-    //     script {
-    //       docker.withRegistry('https://registry.hub.docker.com', 'dockerhub')
-    //         dockerapp.push('latest')
-    //         dockerapp.push("${env.BUILD_ID}")
-    //     }
-    //   }
-    // }
+    stage ('push docker image') {
+      steps {
+        script {
+          docker.withRegistry('https://registry.hub.docker.com', 'dockerhub')
+            dockerapp.push('latest')
+            dockerapp.push("${env.BUILD_ID}")
+        }
+      }
+    }
     stage ('deploy kubernetes') {
       environment {
-        tag_version = '18'
+        tag_version = "${env.BUILD_ID}"
       }
       steps {
         withKubeConfig ([credentialsId: 'kubeconfig']) {
