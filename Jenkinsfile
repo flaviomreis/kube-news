@@ -9,12 +9,20 @@ pipeline {
         }
       }
     }
-    stage ('push docker image') {
+    // stage ('push docker image') {
+    //   steps {
+    //     script {
+    //       docker.withRegistry('https://registry.hub.docker.com', 'dockerhub')
+    //         dockerapp.push('latest')
+    //         dockerapp.push("${env.BUILD_ID}")
+    //     }
+    //   }
+    // }
+    stage ('deploy kubernetes') {
       steps {
-        script {
-          docker.withRegistry('https://registry.hub.docker.com', 'dockerhub')
-            dockerapp.push('latest')
-            dockerapp.push("${env.BUILD_ID}")
+        withKubeConfig ([credentialsId: 'kubeconfig']) {
+          sh 'kubectl apply -f ./k8s/postgres/service.yaml'
+          sh 'kubectl apply -f ./k8s/postgres/deployment.yaml'
         }
       }
     }
