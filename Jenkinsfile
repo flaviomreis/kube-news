@@ -23,6 +23,8 @@ pipeline {
         withKubeConfig ([credentialsId: 'kubeconfig']) {
           sh 'kubectl apply -f ./k8s/postgres/service.yaml'
           sh 'kubectl apply -f ./k8s/postgres/deployment.yaml'
+          sh 'kubectl apply -f ./k8s/app/service.yaml'
+          sh 'kubectl apply -f ./k8s/app/deployment.yaml'
         }
       }
     }
