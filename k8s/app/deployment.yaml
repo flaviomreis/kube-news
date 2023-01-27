@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
         - name: webapp-deploy
-          image: f18s/kube-news:v1
+          image: f18s/kube-news:{{TAG}}
           ports:
             - containerPort: 8080
           env:
