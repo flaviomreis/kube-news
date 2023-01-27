@@ -3,6 +3,7 @@ kind: Deployment
 metadata:
   name: webapp-deploy
 spec:
+  replicas: 10
   selector:
     matchLabels:
       app: webapp-deploy
@@ -10,6 +11,10 @@ spec:
     metadata:
       labels:
         app: webapp-deploy
+      annotations:
+        prometheus.io/scrape: 'true'
+        prometheus.io/port: '8080'
+        prometheus.io/path: '/metrics'
     spec:
       containers:
         - name: webapp-deploy
